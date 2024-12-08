@@ -1,6 +1,7 @@
 {
   "name": "llm-studio",
   "version": "0.1.0",
+  "description": "A comprehensive Next.js application for running and exploring .gguf open-source LLM models locally.",
   "private": true,
   "scripts": {
     "dev": "next dev",
@@ -9,14 +10,15 @@
     "lint": "next lint"
   },
   "dependencies": {
+    "next": "14.2.20",
+    "node-llama-cpp": "^3.3.0",
     "react": "^18",
-    "react-dom": "^18",
-    "next": "14.2.20"
+    "react-dom": "^18"
   },
   "devDependencies": {
-    "postcss": "^8",
-    "tailwindcss": "^3.4.1",
     "eslint": "^8",
-    "eslint-config-next": "14.2.20"
+    "eslint-config-next": "14.2.20",
+    "postcss": "^8",
+    "tailwindcss": "^3.4.1"
   }
 }
