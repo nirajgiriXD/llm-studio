@@ -5,16 +5,20 @@
 import { getAnswer, saveChatData } from "@/utilities";
 
 export const POST = async (req, res) => {
-  const { prompt, selectedModel } = await req.json();
+  const { prompt, selectedModel, isIncognito } = await req.json();
 
   // Save the user message
-  saveChatData(prompt, 'user');
+  if (!isIncognito) {
+    saveChatData(prompt, 'user');
+  }
 
   // Get the bot message
   const answer = await getAnswer(prompt, selectedModel);
 
   // Save the bot message
-  saveChatData(answer, 'bot');
+  if (!isIncognito) {
+    saveChatData(answer, 'bot');
+  }
 
   return new Response(JSON.stringify({ message: answer }), { status: 200 });
 };

@@ -7,7 +7,7 @@ import {
   CommandItem,
   CommandList,
 } from "@/components/ui/command";
-import { useHistorySearch } from "@/hooks/use-history-search";
+import useHistorySearch from "@/hooks/use-history-search";
 
 export function HistorySearch() {
   const {
@@ -37,12 +37,13 @@ export function HistorySearch() {
         >
           <CommandList className="max-h-40 overflow-y-auto">
             <CommandEmpty className="text-sm text-center h-auto my-2">
-                {options.length === 0 ? 'No results found' : 'hello'}
+              No results found
             </CommandEmpty>
 
             {/* Options */}
-            {options.map((option, idx) => (
-              <CommandItem
+            {options.map((option, idx) => {
+              {/* console.log(option); */}
+              return <CommandItem
                 key={idx}
                 onSelect={handleOptionSelect}
                 className="cursor-pointer"
@@ -50,7 +51,7 @@ export function HistorySearch() {
               >
                 {option.title}
               </CommandItem>
-            ))}
+            })}
           </CommandList>
         </div>
       </Command>

@@ -17,7 +17,7 @@ import { Button } from "@/components/ui/button";
 import useApp from "@/hooks/use-app";
 
 export function AppSidebar({ ...props }) {
-  const { models, selectedModel, historyDates, setSelectedDate } = useApp();
+  const { models, selectedModel, historyDates, selectedDate, setSelectedDate } = useApp();
 
   return (
     <Sidebar {...props}>
@@ -38,6 +38,7 @@ export function AppSidebar({ ...props }) {
                         e.preventDefault();
                         setSelectedDate(date);
                       }}
+                      className={date === selectedDate ? "bg-slate-100" : ""}
                     >
                       {date}
                     </a>

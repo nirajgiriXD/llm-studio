@@ -21,6 +21,7 @@ const AppDataProvider = ({ children }) => {
   const [selectedDate, setSelectedDate] = useState(getFormattedDate());
   const [currentUserMessage, setCurrentUserMessage] = useState("");
   const [isReponseLoading, setIsResponseLoading] = useState(false);
+  const [isIncognito, setIsIncognito] = useState(false);
 
   // Fetch models data (`models`, `selectedModel`) on component mount
   useEffect(() => {
@@ -51,8 +52,6 @@ const AppDataProvider = ({ children }) => {
   // Fetch history data (`history`, `historyDates`) on component mount
   useEffect(() => {
     const initializeHistory = async () => {
-      const currentDate = getFormattedDate();
-
       try {
         const response = await fetch('/api/history');
 
@@ -63,7 +62,7 @@ const AppDataProvider = ({ children }) => {
         const { data = {}, date = [] } = await response.json();
 
         setHistory(data);
-        setHistoryDates(date);
+        setHistoryDates(date.sort((a,b) => b.localeCompare(a)));
       } catch (error) {
         toast({
           title: "Failed To Fetch History",
@@ -89,6 +88,8 @@ const AppDataProvider = ({ children }) => {
     setIsResponseLoading,
     selectedDate,
     setSelectedDate,
+    isIncognito,
+    setIsIncognito,
   };
 
   return (

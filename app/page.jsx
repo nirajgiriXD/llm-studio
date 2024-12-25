@@ -16,6 +16,7 @@ import {
 } from "@/components/ui/sidebar"
 import { HistorySearch } from '@/components/history-search';
 import Chat from '@/components/chat';
+import ToggleIncognito from '@/components/toggle-incognito';
 import CurrentChatHistory from '@/components/current-chat-history';
 
 export default function Page() {
@@ -41,7 +42,8 @@ export default function Page() {
               </BreadcrumbList>
             </Breadcrumb>
           </div>
-          <div>
+          <div className="flex gap-4 items-center">
+            <ToggleIncognito />
             <HistorySearch />
           </div>
         </header>
