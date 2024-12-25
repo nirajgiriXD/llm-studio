@@ -10,8 +10,7 @@ import path from "path";
  *
  * @returns string
  */
-const getAnswer = async (prompt) => {
-    const LLAMA_MODEL_NAME = process.env.LLAMA_MODEL_NAME;
+const getAnswer = async (prompt, selectedModel) => {
     let answer = "";
 
     try {
@@ -19,7 +18,7 @@ const getAnswer = async (prompt) => {
         const __dirname = path.dirname(__filename);
 
         const llama = await getLlama();
-        const modelPath = path.join(__dirname, "../models", LLAMA_MODEL_NAME);
+        const modelPath = path.join(__dirname, "../models", selectedModel);
         const model = await llama.loadModel({ modelPath });
 
         const context = await model.createContext();
