@@ -19,6 +19,7 @@ const useChat = () => {
     isResponseLoading,
     setIsResponseLoading,
     setHistory,
+    isIncognito,
   } = useApp();
 
   const currentDate = getFormattedDate();
@@ -57,6 +58,7 @@ const useChat = () => {
         body: JSON.stringify({
           prompt: _currentUserMessage,
           selectedModel,
+          isIncognito,
         }),
       });
 
