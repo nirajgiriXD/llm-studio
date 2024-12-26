@@ -1,8 +1,8 @@
 /**
  * External dependencies
  */
-import { readdirSync } from 'fs';
-import { join, extname } from 'path';
+import { join, extname, basename } from 'path';
+import { readdirSync, statSync } from 'fs';
 
 /**
  * Get the list of .gguf files in the models folder.
@@ -16,8 +16,18 @@ const getModels = () => {
         // Read the directory
         const files = readdirSync(modelsFolderPath);
 
-        // Filter files with the .gguf extension
-        const ggufFiles = files.filter((file) => extname(file) === '.gguf');
+        // Filter and map files with the .gguf extension to the desired structure
+        const ggufFiles = files
+            .filter((file) => extname(file) === '.gguf')
+            .map((file) => {
+                const filePath = join(modelsFolderPath, file);
+                const stats = statSync(filePath);
+
+                return {
+                    name: basename(file, '.gguf'),
+                    sizeInBytes: stats.size,
+                };
+            });
 
         return ggufFiles;
     } catch (error) {
