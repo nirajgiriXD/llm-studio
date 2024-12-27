@@ -1,7 +1,15 @@
+/**
+ * External dependencies.
+ */
 import fs from "fs";
 import path from "path";
 
-// Append chat data to the file or create a new one
+/**
+ * Save chat data to a JSON file.
+ * @param {string} message User message or LLM response
+ * @param {string} agent User or Selected LLM Model
+ * @param {string} selectedDate JSON file name
+ */
 const saveChatData = (message, agent, selectedDate) => {
   const folderPath = path.join(process.cwd(), "history");
   const fileName = `${selectedDate}.json`;

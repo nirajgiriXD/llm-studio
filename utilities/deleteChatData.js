@@ -1,6 +1,15 @@
+/**
+ * External dependencies.
+ */
 import fs from "fs";
 import path from "path";
 
+/**
+ * Deletes a chat entry from the JSON file.
+ * @param {string} date JSON file name
+ * @param {string} timestamp Timestamp of the chat entry
+ * @returns {boolean} True if the chat entry was deleted successfully
+ */
 const deleteChatData = (date, timestamp) => {
   const folderPath = path.join(process.cwd(), "history");
   const filePath = path.join(folderPath, `${date}.json`);

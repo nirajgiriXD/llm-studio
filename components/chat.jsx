@@ -1,10 +1,13 @@
 "use client";
 
+/**
+ * Internal dependencies.
+ */
 import { Button } from "@/components/ui/button";
 import { Textarea } from "@/components/ui/textarea";
-import useChat from "@/hooks/use-chat";
+import useChat from "@/hooks/useChat";
 
-const Chat = () => {
+export const Chat = () => {
   const {
     currentUserMessage,
     setCurrentUserMessage,
@@ -33,11 +36,10 @@ const Chat = () => {
           }
         }}
       />
+
       <div className="flex justify-end">
         <Button onClick={handleSubmit}>Submit</Button>
       </div>
     </div>
   );
 };
-
-export default Chat;

@@ -1,8 +1,14 @@
 "use client";
 
+/**
+ * External dependencies.
+ */
 import { useEffect } from "react";
 import { Check, ChevronsUpDown, GalleryVerticalEnd } from "lucide-react";
 
+/**
+ * Internal dependencies.
+ */
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -14,9 +20,9 @@ import {
   SidebarMenuButton,
   SidebarMenuItem,
 } from "@/components/ui/sidebar";
-import useApp from "@/hooks/use-app";
+import useApp from "@/hooks/useApp";
 
-export function VersionSwitcher({ models, defaultModel }) {
+export const VersionSwitcher = ({ models, defaultModel }) => {
   const { selectedModel, setSelectedModel } = useApp();
 
   useEffect(() => {
@@ -63,4 +69,4 @@ export function VersionSwitcher({ models, defaultModel }) {
       </SidebarMenuItem>
     </SidebarMenu>
   );
-}
+};

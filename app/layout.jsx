@@ -1,7 +1,14 @@
+/**
+ * External dependencies.
+ */
 import localFont from "next/font/local";
+
+/**
+ * Internal dependencies.
+ */
 import "@/styles/globals.css";
-import AppDataProvider from "@/providers/AppDataProvider";
 import { Toaster } from "@/components/ui/toaster";
+import AppDataProvider from "@/providers/AppDataProvider";
 
 const geistSans = localFont({
   src: "../public/fonts/GeistVF.woff",
@@ -15,6 +22,7 @@ const geistMono = localFont({
   weight: "100 900",
 });
 
+// Page metadata.
 export const metadata = {
   title: "LLM Studio",
   description:

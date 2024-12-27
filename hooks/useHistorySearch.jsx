@@ -1,3 +1,5 @@
+"use client";
+
 /**
  * External dependencies.
  */
@@ -6,14 +8,14 @@ import { useState, useEffect } from "react";
 /**
  * Internal dependencies.
  */
-import useApp from "./use-app";
+import useApp from "@/hooks/useApp";
 
 const useHistorySearch = () => {
   const [query, setQuery] = useState("");
   const [options, setOptions] = useState([]);
   const [mappedHistoryData, setMappedHistoryData] = useState([]);
 
-  const { history, setSelectedDate, selectedDate } = useApp();
+  const { history, setSelectedDate } = useApp();
 
   // Set the query based on the input value
   const handleInputChange = (input) => {
@@ -48,6 +50,7 @@ const useHistorySearch = () => {
     }, 200);
   };
 
+  // Filter the options based on the query
   useEffect(() => {
     if (!query) {
       setOptions([]);
@@ -61,6 +64,7 @@ const useHistorySearch = () => {
     setOptions(filteredOptions);
   }, [query, mappedHistoryData]);
 
+  // Map the history data to the options format
   useEffect(() => {
     const initializeSearchOptions = () => {
       const data = Object.entries(history).flatMap(([key, entries]) =>

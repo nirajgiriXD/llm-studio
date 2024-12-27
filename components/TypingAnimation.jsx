@@ -1,6 +1,4 @@
-import { Card, CardContent } from "./ui/card";
-
-const TypingAnimation = () => {
+export const TypingAnimation = () => {
   return (
     <div className="flex items-center space-x-2">
       <div className="w-2 h-2 rounded-full bg-gray-600 animate-bounce-dot1" />
@@ -9,5 +7,3 @@ const TypingAnimation = () => {
     </div>
   );
 };
-
-export default TypingAnimation;

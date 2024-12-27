@@ -1,7 +1,14 @@
 "use client";
 
+/**
+ * External dependencies.
+ */
 import { useRef } from "react";
-import useApp from "@/hooks/use-app";
+
+/**
+ * Internal dependencies.
+ */
+import useApp from "@/hooks/useApp";
 import { toast } from "@/hooks/use-toast";
 
 const useChat = () => {
@@ -23,6 +30,7 @@ const useChat = () => {
     setCurrentUserMessage(event.target.value);
   };
 
+  // Function to handle the chat message submission
   const handleSubmit = async () => {
     let botMessage = "";
     let timestamp = new Date().toISOString();

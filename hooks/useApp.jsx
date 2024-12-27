@@ -1,6 +1,13 @@
 "use client";
 
+/**
+ * External dependencies.
+ */
 import { useContext } from "react";
+
+/**
+ * Internal dependencies.
+ */
 import { AppDataContext } from "@/providers/AppDataProvider";
 
 const useApp = () => {

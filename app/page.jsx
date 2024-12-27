@@ -1,5 +1,11 @@
+/**
+ * External dependencies.
+ */
 import { HomeIcon } from "lucide-react";
-import { AppSidebar } from "@/components/app-sidebar";
+
+/**
+ * Internal dependencies.
+ */
 import {
   Breadcrumb,
   BreadcrumbItem,
@@ -8,23 +14,26 @@ import {
   BreadcrumbPage,
   BreadcrumbSeparator,
 } from "@/components/ui/breadcrumb";
-import { Separator } from "@/components/ui/separator";
 import {
   SidebarInset,
   SidebarProvider,
   SidebarTrigger,
 } from "@/components/ui/sidebar";
-import { HistorySearch } from "@/components/history-search";
-import Chat from "@/components/chat";
-import ToggleIncognito from "@/components/toggle-incognito";
-import CurrentChatHistory from "@/components/current-chat-history";
+import { Separator } from "@/components/ui/separator";
+import { AppSidebar } from "@/components/AppSidebar";
+import { HistorySearch } from "@/components/HistorySearch";
+import { ToggleIncognito } from "@/components/ToggleIncognito";
+import { Chat } from "@/components/Chat";
+import { ChatHistory } from "@/components/ChatHistory";
 
-export default function Page() {
+const Page = () => {
   return (
     <SidebarProvider>
       <AppSidebar />
       <SidebarInset>
+        {/* Header */}
         <header className="flex h-16 items-center border-b px-4 justify-between">
+          {/* Breadcrumb */}
           <div className="flex gap-2 items-center shrink-0">
             <SidebarTrigger className="-ml-1" />
             <Separator orientation="vertical" className="mr-2 h-4" />
@@ -42,15 +51,19 @@ export default function Page() {
               </BreadcrumbList>
             </Breadcrumb>
           </div>
+
+          {/* Actions */}
           <div className="flex gap-4 items-center">
             <ToggleIncognito />
             <HistorySearch />
           </div>
         </header>
+
+        {/* Main content */}
         <div className="flex flex-col h-[calc(100vh-4rem)] gap-4 p-4">
           {/* Chat history section */}
           <div className="flex-1 overflow-y-auto" id="current-chat-history">
-            <CurrentChatHistory />
+            <ChatHistory />
           </div>
 
           {/* Chat input section */}
@@ -61,4 +74,6 @@ export default function Page() {
       </SidebarInset>
     </SidebarProvider>
   );
-}
+};
+
+export default Page;

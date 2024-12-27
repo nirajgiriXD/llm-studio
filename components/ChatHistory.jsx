@@ -1,14 +1,17 @@
 "use client";
 
-import useApp from "@/hooks/use-app";
-import ChatCard from "./chat-card";
-import TypingAnimation from "./typing-animation";
-import useCurrentChatHistory from "@/hooks/use-current-chat-history";
+/**
+ * Internal dependencies.
+ */
+import { ChatCard } from "@/components/ChatCard";
+import { TypingAnimation } from "@/components/TypingAnimation";
+import useApp from "@/hooks/useApp";
+import useChatHistory from "@/hooks/useChatHistory";
 
-const CurrentChatHistory = () => {
+export const ChatHistory = () => {
   const { history, selectedDate, isReponseLoading, setHistory } = useApp();
 
-  const { sortedHistory, handleCopy, handleDelete } = useCurrentChatHistory({
+  const { sortedHistory, handleCopy, handleDelete } = useChatHistory({
     history,
     setHistory,
     selectedDate,
@@ -40,5 +43,3 @@ const CurrentChatHistory = () => {
     </div>
   );
 };
-
-export default CurrentChatHistory;

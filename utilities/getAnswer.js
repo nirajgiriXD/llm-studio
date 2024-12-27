@@ -8,7 +8,9 @@ import path from "path";
 /**
  * Get the answer from the model.
  *
- * @returns string
+ * @param {string} prompt The prompt to be answered.
+ * @param {string} selectedModel The selected model.
+ * @returns {string} The answer from the model.
  */
 const getAnswer = async (prompt, selectedModel) => {
   let answer = "";

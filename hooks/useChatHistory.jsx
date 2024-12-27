@@ -1,9 +1,17 @@
 "use client";
 
+/**
+ * External dependencies.
+ */
 import { useCallback, useMemo } from "react";
-import { toast } from "./use-toast";
 
-const useCurrentChatHistory = ({ history, setHistory, selectedDate }) => {
+/**
+ * Internal dependencies.
+ */
+import { toast } from "@/hooks/use-toast";
+
+const useChatHistory = ({ history, setHistory, selectedDate }) => {
+  // Sort the chat history based on the timestamp
   const sortedHistory = useMemo(
     () =>
       (history[selectedDate] || []).sort((a, b) =>
@@ -12,6 +20,7 @@ const useCurrentChatHistory = ({ history, setHistory, selectedDate }) => {
     [history, selectedDate]
   );
 
+  // Function to handle copying the message
   const handleCopy = useCallback((message, setIsCopying) => {
     setIsCopying(true);
 
@@ -23,6 +32,7 @@ const useCurrentChatHistory = ({ history, setHistory, selectedDate }) => {
     }, 1000);
   }, []);
 
+  // Function to handle deleting the message
   const handleDelete = useCallback(async (date, timestamp) => {
     const isConfirmed = confirm(
       `Are you sure you want to delete this message?`
@@ -74,4 +84,4 @@ const useCurrentChatHistory = ({ history, setHistory, selectedDate }) => {
   return { sortedHistory, handleCopy, handleDelete };
 };
 
-export default useCurrentChatHistory;
+export default useChatHistory;

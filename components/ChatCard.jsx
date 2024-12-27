@@ -1,11 +1,23 @@
 "use client";
 
+/**
+ * External dependencies.
+ */
 import { ClipboardIcon, ClipboardCheckIcon, TrashIcon } from "lucide-react";
-import { useState } from "react";
 import Markdown from "markdown-to-jsx";
-import { Card, CardContent } from "./ui/card";
+import { useState } from "react";
 
-const ChatCard = ({ history, selectedDate, handleCopy, handleDelete }) => {
+/**
+ * Internal dependencies.
+ */
+import { Card, CardContent } from "@/components/ui/card";
+
+export const ChatCard = ({
+  history,
+  selectedDate,
+  handleCopy,
+  handleDelete,
+}) => {
   const [isCopying, setIsCopying] = useState(false);
 
   return (
@@ -57,5 +69,3 @@ const ChatCard = ({ history, selectedDate, handleCopy, handleDelete }) => {
     </Card>
   );
 };
-
-export default ChatCard;

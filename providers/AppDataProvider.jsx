@@ -1,10 +1,22 @@
 "use client";
 
-import { toast } from "@/hooks/use-toast";
+/**
+ * External dependencies.
+ */
 import { createContext, useEffect, useState } from "react";
 
+/**
+ * Internal dependencies.
+ */
+import { toast } from "@/hooks/use-toast";
+
+// Create a context to store the application data
 export const AppDataContext = createContext({});
 
+/**
+ * Get formatted date in `YYYY-MM-DD` format.
+ * @returns {string} Formatted date.
+ */
 const getFormattedDate = () => {
   const today = new Date();
   const year = today.getFullYear();
@@ -13,6 +25,11 @@ const getFormattedDate = () => {
   return `${year}-${month}-${day}`;
 };
 
+/**
+ * Provider component to store and manage the application data.
+ * @param {Object} props Component props.
+ * @returns {JSX.Element} AppDataProvider component.
+ */
 const AppDataProvider = ({ children }) => {
   const [selectedModel, setSelectedModel] = useState("");
   const [models, setModels] = useState([]);
@@ -81,6 +98,7 @@ const AppDataProvider = ({ children }) => {
     initializeHistory();
   }, []);
 
+  // Values to be passed to the context
   const value = {
     models,
     selectedModel,

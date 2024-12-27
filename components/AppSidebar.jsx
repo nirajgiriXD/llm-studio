@@ -1,6 +1,9 @@
 "use client";
 
-import { VersionSwitcher } from "@/components/version-switcher";
+/**
+ * Internal dependencies.
+ */
+import { VersionSwitcher } from "@/components/VersionSwitcher";
 import {
   Sidebar,
   SidebarContent,
@@ -13,10 +16,9 @@ import {
   SidebarMenuItem,
   SidebarRail,
 } from "@/components/ui/sidebar";
-import { Button } from "@/components/ui/button";
-import useApp from "@/hooks/use-app";
+import useApp from "@/hooks/useApp";
 
-export function AppSidebar({ ...props }) {
+export const AppSidebar = ({ ...props }) => {
   const { models, selectedModel, historyDates, selectedDate, setSelectedDate } =
     useApp();
 
@@ -53,4 +55,4 @@ export function AppSidebar({ ...props }) {
       <SidebarRail />
     </Sidebar>
   );
-}
+};

@@ -1,13 +1,19 @@
 "use client";
 
+/**
+ * External dependencies.
+ */
 import Select from "react-select";
-import useHistorySearch from "@/hooks/use-history-search";
 
-export function HistorySearch() {
+/**
+ * Internal dependencies.
+ */
+import useHistorySearch from "@/hooks/useHistorySearch";
+
+export const HistorySearch = () => {
   const { query, options, handleInputChange, handleOptionSelect } =
     useHistorySearch();
 
-  // Style for suggestions dropdown.
   const customStyles = {
     control: (provided) => ({
       ...provided,
@@ -55,4 +61,4 @@ export function HistorySearch() {
       />
     </div>
   );
-}
+};
