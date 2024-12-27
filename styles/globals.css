@@ -92,3 +92,19 @@ body {
     @apply bg-background text-foreground;
   }
 }
+
+/* Scrollbar: Start */
+#current-chat-history::-webkit-scrollbar {
+  height: 100%;
+  width: 7px;
+}
+
+#current-chat-history::-webkit-scrollbar-thumb {
+  background-color: #e2e8f0;
+}
+
+#current-chat-history::-webkit-scrollbar-track,
+#current-chat-history::-webkit-scrollbar-thumb {
+  border-radius: 21px;
+}
+/* Scrollbar: End */

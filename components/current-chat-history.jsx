@@ -15,7 +15,7 @@ const CurrentChatHistory = () => {
   });
 
   return (
-    <div className="space-y-4">
+    <div className="space-y-4 m-2">
       {sortedHistory.map((history) => (
         <div
           key={history.timestamp}
@@ -33,7 +33,7 @@ const CurrentChatHistory = () => {
       ))}
 
       {isReponseLoading && (
-        <div className="py-4">
+        <div className="">
           <TypingAnimation />
         </div>
       )}

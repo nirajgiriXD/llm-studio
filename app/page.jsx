@@ -47,17 +47,15 @@ export default function Page() {
             <HistorySearch />
           </div>
         </header>
-        <div className="flex flex-1 flex-col gap-4 p-4">
-          <div className="h-full flex flex-col gap-4">
-            {/* Chat history section */}
-            <div className="flex-1 overflow-y-auto">
-              <CurrentChatHistory />
-            </div>
+        <div className="flex flex-col h-[calc(100vh-4rem)] gap-4 p-4">
+          {/* Chat history section */}
+          <div className="flex-1 overflow-y-auto" id="current-chat-history">
+            <CurrentChatHistory />
+          </div>
 
-            {/* Chat input section */}
-            <div className="flex-shrink-0">
-              <Chat />
-            </div>
+          {/* Chat input section */}
+          <div className="h-28 flex-shrink-0">
+            <Chat />
           </div>
         </div>
       </SidebarInset>

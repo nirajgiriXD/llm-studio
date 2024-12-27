@@ -43,7 +43,7 @@ const useHistorySearch = () => {
         targetElement.scrollIntoView({ behavior: "smooth", block: "center" });
 
         // Delay focusing to allow the scroll to complete
-        setTimeout(() => targetElement.focus(), 1000);
+        setTimeout(() => targetElement.focus(), 800);
       }
     }, 200);
   };
