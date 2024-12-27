@@ -16,7 +16,6 @@ const ChatCard = ({ history, selectedDate, handleCopy, handleDelete }) => {
     >
       <CardContent className="p-4">
         {/* Header */}
-        
 
         {/* Message */}
         <div className="mb-3">
@@ -25,17 +24,19 @@ const ChatCard = ({ history, selectedDate, handleCopy, handleDelete }) => {
 
         {/* Footer */}
         <div className="text-[10px] text-slate-600 flex items-center justify-between">
-          <div>
-            {history.agent !== "user" && (
-              <>
-                {history.agent.replace(".gguf", "")}
-                <span className="mx-2">•</span>
-              </>
-            )}
+          <div className="flex items-center gap-2">
+            <span>
+              {history.agent === "user"
+                ? history.agent.charAt(0).toUpperCase() + history.agent.slice(1)
+                : history.agent.replace(".gguf", "")}
+            </span>
+            <span>•</span>
             {history.timestamp}
           </div>
           <div className="flex items-center gap-2">
-            <button onClick={() => handleDelete(selectedDate, history.timestamp)}>
+            <button
+              onClick={() => handleDelete(selectedDate, history.timestamp)}
+            >
               <TrashIcon size={12} color="#9f1239" />
             </button>
             <button

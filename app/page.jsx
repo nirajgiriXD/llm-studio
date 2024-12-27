@@ -36,7 +36,7 @@ export default function Page() {
                   </BreadcrumbLink>
                 </BreadcrumbItem>
                 <BreadcrumbSeparator className="hidden md:block" />
-                <BreadcrumbItem>
+                <BreadcrumbItem className="hidden md:block" >
                   <BreadcrumbPage>Chat</BreadcrumbPage>
                 </BreadcrumbItem>
               </BreadcrumbList>
