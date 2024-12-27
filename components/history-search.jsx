@@ -1,60 +1,56 @@
 "use client";
 
-import {
-  Command,
-  CommandEmpty,
-  CommandInput,
-  CommandItem,
-  CommandList,
-} from "@/components/ui/command";
+import Select from "react-select";
 import useHistorySearch from "@/hooks/use-history-search";
 
 export function HistorySearch() {
-  const {
-    query,
-    options,
-    inputRef,
-    containerRef,
-    isDropdownVisible,
-    handleInputChange,
-    handleOptionSelect,
-  } = useHistorySearch();
+  const { query, options, handleInputChange, handleOptionSelect } =
+    useHistorySearch();
+
+  // Style for suggestions dropdown.
+  const customStyles = {
+    control: (provided) => ({
+      ...provided,
+      width: '100%',
+    }),
+    menu: (provided) => ({
+      ...provided,
+      ...{
+        "& ::-webkit-scrollbar": {
+          height: "100%",
+          width: "5px",
+          marginLeft: "5px",
+        },
+        "& ::-webkit-scrollbar-thumb": {
+          backgroundColor: "var(--nav-color)",
+        },
+        "& ::-webkit-scrollbar-track, & ::-webkit-scrollbar-thumb": {
+          borderRadius: "21px",
+        },
+        width: '100%',
+      },
+    }),
+  };
 
   return (
-    <div ref={containerRef} className="relative">
-      <Command className="rounded-md border h-auto md:min-w-[300px]">
-        <CommandInput
-          ref={inputRef}
-          placeholder="Search..."
-          value={query}
-          onInput={handleInputChange}
-        />
-        <div
-          className="absolute top-full left-0 mt-1 z-50 bg-white border rounded-md w-full max-h-40"
-          style={{
-            display: isDropdownVisible ? "block" : "none",
-          }}
-        >
-          <CommandList className="max-h-40 overflow-y-auto">
-            <CommandEmpty className="text-sm text-center h-auto my-2">
-              No results found
-            </CommandEmpty>
-
-            {/* Options */}
-            {options.map((option, idx) => {
-              {/* console.log(option); */}
-              return <CommandItem
-                key={idx}
-                onSelect={handleOptionSelect}
-                className="cursor-pointer"
-                value={option.value}
-              >
-                {option.title}
-              </CommandItem>
-            })}
-          </CommandList>
-        </div>
-      </Command>
+    <div className="w-[250px]">
+      <Select
+        instanceId="history-search-select"
+        value={query}
+        onChange={handleOptionSelect}
+        onInputChange={handleInputChange}
+        className={"search-field text-sm"}
+        isClearable={true}
+        escapeClearsValue={true}
+        options={options}
+        classNamePrefix="react-select"
+        placeholder="Search..."
+        noOptionsMessage={({ inputValue }) => {
+          return inputValue === "" ? "Start typing to search" : "Chat not found";
+        }}
+        styles={customStyles}
+        maxMenuHeight={400}
+      />
     </div>
   );
 }

@@ -10,9 +10,11 @@ const ChatCard = ({ history, selectedDate, handleCopy, handleDelete }) => {
 
   return (
     <Card
+      tabIndex="0"
+      data-timestamp={history.timestamp}
       className={`max-w-xl w-full shadow-none ${
         history.agent === "user" ? "bg-sky-100" : "bg-gray-200"
-      }`}
+      } border border-gray-200 focus:border-blue-400 focus:outline-none`}
     >
       <CardContent className="p-4">
         {/* Header */}
