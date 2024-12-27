@@ -52,6 +52,7 @@ const AppDataProvider = ({ children }) => {
   // Fetch history data (`history`, `historyDates`) on component mount
   useEffect(() => {
     const initializeHistory = async () => {
+      const formattedDate = getFormattedDate();
       try {
         const response = await fetch('/api/history');
 
@@ -60,6 +61,10 @@ const AppDataProvider = ({ children }) => {
         }
 
         const { data = {}, date = [] } = await response.json();
+
+        if (!date.includes(formattedDate)) {
+            date.push(formattedDate);
+        }
 
         setHistory(data);
         setHistoryDates(date.sort((a,b) => b.localeCompare(a)));
