@@ -1,18 +1,10 @@
 import fs from 'fs';
 import path from 'path';
 
-const getFormattedDate = () => {
-    const today = new Date();
-    const year = today.getFullYear();
-    const month = String(today.getMonth() + 1).padStart(2, '0');
-    const day = String(today.getDate()).padStart(2, '0');
-    return `${year}-${month}-${day}`;
-};
-
 // Append chat data to the file or create a new one
-const saveChatData = (message, agent) => {
+const saveChatData = (message, agent, selectedDate) => {
     const folderPath = path.join(process.cwd(), 'history');
-    const fileName = `${getFormattedDate()}.json`;
+    const fileName = `${selectedDate}.json`;
     const filePath = path.join(folderPath, fileName);
 
     // Ensure the folder exists

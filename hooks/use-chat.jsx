@@ -4,14 +4,6 @@ import { useRef } from "react";
 import useApp from "@/hooks/use-app";
 import { toast } from "@/hooks/use-toast";
 
-const getFormattedDate = () => {
-  const today = new Date();
-  const year = today.getFullYear();
-  const month = String(today.getMonth() + 1).padStart(2, '0');
-  const day = String(today.getDate()).padStart(2, '0');
-  return `${year}-${month}-${day}`;
-};
-
 const useChat = () => {
   const inputRef = useRef(null);
 
@@ -19,13 +11,12 @@ const useChat = () => {
     currentUserMessage,
     setCurrentUserMessage,
     selectedModel,
+    selectedDate,
     isResponseLoading,
     setIsResponseLoading,
     setHistory,
     isIncognito,
   } = useApp();
-
-  const currentDate = getFormattedDate();
 
   // Function to handle the change in textarea value
   const handleChange = (event) => {
@@ -41,7 +32,7 @@ const useChat = () => {
     setIsResponseLoading(true);
 
     setHistory((prev) => {
-      const prevData = prev[currentDate] || [];
+      const prevData = prev[selectedDate] || [];
       const newData = [
         ...prevData,
         { agent: "user", message: _currentUserMessage, timestamp }
@@ -49,7 +40,7 @@ const useChat = () => {
 
       const data = {
         ...prev,
-        [currentDate]: newData,
+        [selectedDate]: newData,
       };
 
       return data;
@@ -62,6 +53,7 @@ const useChat = () => {
           prompt: _currentUserMessage,
           selectedModel,
           isIncognito,
+          selectedDate,
         }),
       });
 
@@ -79,7 +71,7 @@ const useChat = () => {
       setIsResponseLoading(false);
 
       setHistory((prev) => {
-        const prevData = prev[currentDate] || [];
+        const prevData = prev[selectedDate] || [];
         const newData = [
           ...prevData,
           { agent: selectedModel, message: botMessage, timestamp }
@@ -87,7 +79,7 @@ const useChat = () => {
   
         const data = {
           ...prev,
-          [currentDate]: newData,
+          [selectedDate]: newData,
         };
   
         return data;

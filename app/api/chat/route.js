@@ -4,11 +4,11 @@
 import { getAnswer, saveChatData } from "@/utilities";
 
 export const POST = async (req, res) => {
-  const { prompt, selectedModel, isIncognito } = await req.json();
+  const { prompt, selectedModel, isIncognito, selectedDate } = await req.json();
 
   // Save the user message
   if (!isIncognito) {
-    saveChatData(prompt, 'user');
+    saveChatData(prompt, 'user', selectedDate);
   }
 
   // Get the bot message
@@ -16,7 +16,7 @@ export const POST = async (req, res) => {
 
   // Save the bot message
   if (!isIncognito) {
-    saveChatData(answer, selectedModel.replace(".gguf", ""));
+    saveChatData(answer, selectedModel.replace(".gguf", ""), selectedDate);
   }
 
   return new Response(JSON.stringify({ message: answer }), { status: 200 });
