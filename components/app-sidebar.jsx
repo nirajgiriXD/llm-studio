@@ -17,7 +17,8 @@ import { Button } from "@/components/ui/button";
 import useApp from "@/hooks/use-app";
 
 export function AppSidebar({ ...props }) {
-  const { models, selectedModel, historyDates, selectedDate, setSelectedDate } = useApp();
+  const { models, selectedModel, historyDates, selectedDate, setSelectedDate } =
+    useApp();
 
   return (
     <Sidebar {...props}>

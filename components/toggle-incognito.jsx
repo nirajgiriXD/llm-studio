@@ -8,7 +8,7 @@ import {
   TooltipContent,
   TooltipProvider,
   TooltipTrigger,
-} from "@/components/ui/tooltip"
+} from "@/components/ui/tooltip";
 import { VenetianMaskIcon, SmileIcon } from "lucide-react";
 
 const toggleIncognito = () => {
@@ -20,13 +20,14 @@ const toggleIncognito = () => {
     setIsIncognito(_isIncognito);
     toast({
       title: `Incognito Mode Is ${_isIncognito ? "Enabled" : "Disabled"}`,
-      description: `Your browsing history will ${_isIncognito ? "not" : ""} be saved.`,
+      description: `Your browsing history will ${
+        _isIncognito ? "not" : ""
+      } be saved.`,
       status: "info",
     });
   };
 
   return (
-    
     <TooltipProvider>
       <Tooltip>
         <TooltipTrigger asChild>
@@ -36,7 +37,11 @@ const toggleIncognito = () => {
             variant="outline"
             onClick={handleClick}
           >
-            {isIncognito ? <VenetianMaskIcon size={16} /> : <SmileIcon size={16} />}
+            {isIncognito ? (
+              <VenetianMaskIcon size={16} />
+            ) : (
+              <SmileIcon size={16} />
+            )}
           </Toggle>
         </TooltipTrigger>
         <TooltipContent>

@@ -1,5 +1,5 @@
-import { HomeIcon } from 'lucide-react';
-import { AppSidebar } from "@/components/app-sidebar"
+import { HomeIcon } from "lucide-react";
+import { AppSidebar } from "@/components/app-sidebar";
 import {
   Breadcrumb,
   BreadcrumbItem,
@@ -7,17 +7,17 @@ import {
   BreadcrumbList,
   BreadcrumbPage,
   BreadcrumbSeparator,
-} from "@/components/ui/breadcrumb"
-import { Separator } from "@/components/ui/separator"
+} from "@/components/ui/breadcrumb";
+import { Separator } from "@/components/ui/separator";
 import {
   SidebarInset,
   SidebarProvider,
   SidebarTrigger,
-} from "@/components/ui/sidebar"
-import { HistorySearch } from '@/components/history-search';
-import Chat from '@/components/chat';
-import ToggleIncognito from '@/components/toggle-incognito';
-import CurrentChatHistory from '@/components/current-chat-history';
+} from "@/components/ui/sidebar";
+import { HistorySearch } from "@/components/history-search";
+import Chat from "@/components/chat";
+import ToggleIncognito from "@/components/toggle-incognito";
+import CurrentChatHistory from "@/components/current-chat-history";
 
 export default function Page() {
   return (
@@ -36,7 +36,7 @@ export default function Page() {
                   </BreadcrumbLink>
                 </BreadcrumbItem>
                 <BreadcrumbSeparator className="hidden md:block" />
-                <BreadcrumbItem className="hidden md:block" >
+                <BreadcrumbItem className="hidden md:block">
                   <BreadcrumbPage>Chat</BreadcrumbPage>
                 </BreadcrumbItem>
               </BreadcrumbList>
@@ -62,5 +62,5 @@ export default function Page() {
         </div>
       </SidebarInset>
     </SidebarProvider>
-  )
+  );
 }

@@ -1,7 +1,7 @@
 import localFont from "next/font/local";
 import "@/styles/globals.css";
-import AppDataProvider from '@/providers/AppDataProvider';
-import { Toaster } from "@/components/ui/toaster"
+import AppDataProvider from "@/providers/AppDataProvider";
+import { Toaster } from "@/components/ui/toaster";
 
 const geistSans = localFont({
   src: "../public/fonts/GeistVF.woff",
@@ -17,7 +17,8 @@ const geistMono = localFont({
 
 export const metadata = {
   title: "LLM Studio",
-  description: "A comprehensive Next.js application for running and exploring .gguf open-source LLM models locally.",
+  description:
+    "A comprehensive Next.js application for running and exploring .gguf open-source LLM models locally.",
 };
 
 export default function RootLayout({ children }) {

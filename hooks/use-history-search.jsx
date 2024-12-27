@@ -18,8 +18,8 @@ const useHistorySearch = () => {
   // Set the query based on the input value
   const handleInputChange = (input) => {
     if (input) {
-        const filteredValue = input.trim().toLowerCase();
-        setQuery(filteredValue);
+      const filteredValue = input.trim().toLowerCase();
+      setQuery(filteredValue);
     }
   };
 
@@ -36,7 +36,9 @@ const useHistorySearch = () => {
 
     // Scroll to the div with id as timestamp
     setTimeout(() => {
-      const targetElement = document.querySelector(`[data-timestamp="${timestamp}"]`);
+      const targetElement = document.querySelector(
+        `[data-timestamp="${timestamp}"]`
+      );
       if (targetElement) {
         targetElement.scrollIntoView({ behavior: "smooth", block: "center" });
 
@@ -52,9 +54,9 @@ const useHistorySearch = () => {
       return;
     }
 
-    const filteredOptions = mappedHistoryData.filter((option) =>
-      option.label.toLowerCase().includes(query)
-    ).slice(0, 5);
+    const filteredOptions = mappedHistoryData
+      .filter((option) => option.label.toLowerCase().includes(query))
+      .slice(0, 5);
 
     setOptions(filteredOptions);
   }, [query, mappedHistoryData]);
@@ -81,6 +83,6 @@ const useHistorySearch = () => {
     handleInputChange,
     handleOptionSelect,
   };
-}
+};
 
 export default useHistorySearch;

@@ -11,27 +11,27 @@ import path from "path";
  * @returns string
  */
 const getAnswer = async (prompt, selectedModel) => {
-    let answer = "";
+  let answer = "";
 
-    try {
-        const __filename = fileURLToPath(import.meta.url);
-        const __dirname = path.dirname(__filename);
+  try {
+    const __filename = fileURLToPath(import.meta.url);
+    const __dirname = path.dirname(__filename);
 
-        const llama = await getLlama();
-        const modelPath = path.join(__dirname, "../models", selectedModel);
-        const model = await llama.loadModel({ modelPath });
+    const llama = await getLlama();
+    const modelPath = path.join(__dirname, "../models", selectedModel);
+    const model = await llama.loadModel({ modelPath });
 
-        const context = await model.createContext();
-        const session = new LlamaChatSession({
-            contextSequence: context.getSequence()
-        });
+    const context = await model.createContext();
+    const session = new LlamaChatSession({
+      contextSequence: context.getSequence(),
+    });
 
-        answer = await session.prompt(prompt);
-    } catch (error) {
-        console.error("Error running the model:", error);
-    }
+    answer = await session.prompt(prompt);
+  } catch (error) {
+    console.error("Error running the model:", error);
+  }
 
-    return answer;
+  return answer;
 };
 
 export default getAnswer;

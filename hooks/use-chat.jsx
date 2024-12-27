@@ -33,10 +33,11 @@ const useChat = () => {
 
     setHistory((prev) => {
       const prevData = prev[selectedDate] || [];
-      const newData = [
-        ...prevData,
-        { agent: "user", message: _currentUserMessage, timestamp }
-      ] || [];
+      const newData =
+        [
+          ...prevData,
+          { agent: "user", message: _currentUserMessage, timestamp },
+        ] || [];
 
       const data = {
         ...prev,
@@ -72,16 +73,17 @@ const useChat = () => {
 
       setHistory((prev) => {
         const prevData = prev[selectedDate] || [];
-        const newData = [
-          ...prevData,
-          { agent: selectedModel, message: botMessage, timestamp }
-        ] || [];
-  
+        const newData =
+          [
+            ...prevData,
+            { agent: selectedModel, message: botMessage, timestamp },
+          ] || [];
+
         const data = {
           ...prev,
           [selectedDate]: newData,
         };
-  
+
         return data;
       });
 

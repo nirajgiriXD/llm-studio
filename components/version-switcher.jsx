@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useEffect } from "react";
 import { Check, ChevronsUpDown, GalleryVerticalEnd } from "lucide-react";
 
 import {
@@ -37,7 +37,9 @@ export function VersionSwitcher({ models, defaultModel }) {
               </div>
               <div className="flex flex-col gap-0.5 leading-none">
                 <span className="font-semibold">Models</span>
-                <span className="text-nowrap text-ellipsis overflow-hidden">{selectedModel}</span>
+                <span className="text-nowrap text-ellipsis overflow-hidden">
+                  {selectedModel}
+                </span>
               </div>
               <ChevronsUpDown className="ml-auto" />
             </SidebarMenuButton>

@@ -11,7 +11,7 @@ export function HistorySearch() {
   const customStyles = {
     control: (provided) => ({
       ...provided,
-      width: '100%',
+      width: "100%",
     }),
     menu: (provided) => ({
       ...provided,
@@ -27,7 +27,7 @@ export function HistorySearch() {
         "& ::-webkit-scrollbar-track, & ::-webkit-scrollbar-thumb": {
           borderRadius: "21px",
         },
-        width: '100%',
+        width: "100%",
       },
     }),
   };
@@ -46,7 +46,9 @@ export function HistorySearch() {
         classNamePrefix="react-select"
         placeholder="Search..."
         noOptionsMessage={({ inputValue }) => {
-          return inputValue === "" ? "Start typing to search" : "Chat not found";
+          return inputValue === ""
+            ? "Start typing to search"
+            : "Chat not found";
         }}
         styles={customStyles}
         maxMenuHeight={400}

@@ -8,7 +8,11 @@ import useCurrentChatHistory from "@/hooks/use-current-chat-history";
 const CurrentChatHistory = () => {
   const { history, selectedDate, isReponseLoading, setHistory } = useApp();
 
-  const { sortedHistory, handleCopy, handleDelete } = useCurrentChatHistory({ history, setHistory, selectedDate });
+  const { sortedHistory, handleCopy, handleDelete } = useCurrentChatHistory({
+    history,
+    setHistory,
+    selectedDate,
+  });
 
   return (
     <div className="space-y-4">
@@ -19,7 +23,12 @@ const CurrentChatHistory = () => {
             history.agent === "user" ? "justify-end" : "justify-start"
           }`}
         >
-          <ChatCard history={history} selectedDate={selectedDate} handleCopy={handleCopy} handleDelete={handleDelete} />
+          <ChatCard
+            history={history}
+            selectedDate={selectedDate}
+            handleCopy={handleCopy}
+            handleDelete={handleDelete}
+          />
         </div>
       ))}
 

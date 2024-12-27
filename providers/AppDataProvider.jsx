@@ -1,4 +1,4 @@
-'use client';
+"use client";
 
 import { toast } from "@/hooks/use-toast";
 import { createContext, useEffect, useState } from "react";
@@ -8,8 +8,8 @@ export const AppDataContext = createContext({});
 const getFormattedDate = () => {
   const today = new Date();
   const year = today.getFullYear();
-  const month = String(today.getMonth() + 1).padStart(2, '0');
-  const day = String(today.getDate()).padStart(2, '0');
+  const month = String(today.getMonth() + 1).padStart(2, "0");
+  const day = String(today.getDate()).padStart(2, "0");
   return `${year}-${month}-${day}`;
 };
 
@@ -54,7 +54,7 @@ const AppDataProvider = ({ children }) => {
     const initializeHistory = async () => {
       const formattedDate = getFormattedDate();
       try {
-        const response = await fetch('/api/history');
+        const response = await fetch("/api/history");
 
         if (!response.ok) {
           throw new Error("Failed to fetch history");
@@ -63,15 +63,16 @@ const AppDataProvider = ({ children }) => {
         const { data = {}, date = [] } = await response.json();
 
         if (!date.includes(formattedDate)) {
-            date.push(formattedDate);
+          date.push(formattedDate);
         }
 
         setHistory(data);
-        setHistoryDates(date.sort((a,b) => b.localeCompare(a)));
+        setHistoryDates(date.sort((a, b) => b.localeCompare(a)));
       } catch (error) {
         toast({
           title: "Failed To Fetch History",
-          description: error.message || "An error occurred while fetching history",
+          description:
+            error.message || "An error occurred while fetching history",
           variant: "destructive",
         });
       }
@@ -98,9 +99,7 @@ const AppDataProvider = ({ children }) => {
   };
 
   return (
-    <AppDataContext.Provider value={value}>
-      {children}
-    </AppDataContext.Provider>
+    <AppDataContext.Provider value={value}>{children}</AppDataContext.Provider>
   );
 };
 

@@ -1,12 +1,16 @@
 "use client";
 
-import { useCallback, useMemo } from 'react'
-import { toast } from './use-toast'
+import { useCallback, useMemo } from "react";
+import { toast } from "./use-toast";
 
 const useCurrentChatHistory = ({ history, setHistory, selectedDate }) => {
-  const sortedHistory = useMemo(() => (history[selectedDate] || []).sort((a, b) =>
-    a.timestamp.localeCompare(b.timestamp)
-  ), [history, selectedDate]);
+  const sortedHistory = useMemo(
+    () =>
+      (history[selectedDate] || []).sort((a, b) =>
+        a.timestamp.localeCompare(b.timestamp)
+      ),
+    [history, selectedDate]
+  );
 
   const handleCopy = useCallback((message, setIsCopying) => {
     setIsCopying(true);
@@ -20,7 +24,9 @@ const useCurrentChatHistory = ({ history, setHistory, selectedDate }) => {
   }, []);
 
   const handleDelete = useCallback(async (date, timestamp) => {
-    const isConfirmed = confirm(`Are you sure you want to delete this message?`);
+    const isConfirmed = confirm(
+      `Are you sure you want to delete this message?`
+    );
 
     if (!isConfirmed) {
       return;
@@ -41,7 +47,9 @@ const useCurrentChatHistory = ({ history, setHistory, selectedDate }) => {
 
       setHistory((prev) => {
         const data = { ...prev };
-        const newData = data[selectedDate].filter((item) => item.timestamp !== timestamp);
+        const newData = data[selectedDate].filter(
+          (item) => item.timestamp !== timestamp
+        );
 
         data[selectedDate] = newData;
 

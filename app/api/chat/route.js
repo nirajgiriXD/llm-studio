@@ -8,7 +8,7 @@ export const POST = async (req, res) => {
 
   // Save the user message
   if (!isIncognito) {
-    saveChatData(prompt, 'user', selectedDate);
+    saveChatData(prompt, "user", selectedDate);
   }
 
   // Get the bot message
