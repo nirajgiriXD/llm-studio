@@ -7,7 +7,8 @@
     "dev": "next dev",
     "build": "next build",
     "start": "next start",
-    "lint": "next lint"
+    "lint": "next lint",
+    "ias": "npm install && npm run dev"
   },
   "dependencies": {
     "@radix-ui/react-dialog": "^1.1.4",
