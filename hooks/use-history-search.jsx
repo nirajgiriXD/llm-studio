@@ -8,7 +8,7 @@ import { useState, useRef, useEffect } from "react";
  */
 import useApp from "./use-app";
 
-export function useHistorySearch() {
+const useHistorySearch = () => {
   const [query, setQuery] = useState("");
   const [options, setOptions] = useState([]);
   const [isDropdownVisible, setIsDropdownVisible] = useState(false);
@@ -22,21 +22,21 @@ export function useHistorySearch() {
   const handleInputChange = (e) => {
     const { value } = e.target;
 
-    setQuery(value);
-    setIsDropdownVisible(!!value);
+    const filteredValue = value.trim().toLowerCase();
+
+    setQuery(filteredValue);
+    setIsDropdownVisible(!!filteredValue);
   };
 
-  // Navigate to the selected page if the page exists
+  // Navigate to the selected chat
   const handleOptionSelect = (value) => {
-    if (value) {
-      setQuery("");
-      setIsDropdownVisible(false);
+    setQuery("");
+    setIsDropdownVisible(false);
 
-      // Remove focus from the input
-      inputRef.current?.blur();
+    // Remove focus from the input
+    inputRef.current?.blur();
 
-      console.log("Selected option:", value);
-    }
+    console.log("Selected option:", value);
   };
 
   useEffect(() => {
@@ -77,3 +77,5 @@ export function useHistorySearch() {
     handleOptionSelect,
   };
 }
+
+export default useHistorySearch;

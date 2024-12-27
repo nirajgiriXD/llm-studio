@@ -1,5 +1,6 @@
 "use client";
 
+import { useRef } from "react";
 import useApp from "@/hooks/use-app";
 import { toast } from "@/hooks/use-toast";
 
@@ -12,6 +13,8 @@ const getFormattedDate = () => {
 };
 
 const useChat = () => {
+  const inputRef = useRef(null);
+
   const {
     currentUserMessage,
     setCurrentUserMessage,
@@ -79,7 +82,7 @@ const useChat = () => {
         const prevData = prev[currentDate] || [];
         const newData = [
           ...prevData,
-          { agent: "bot", message: botMessage, timestamp }
+          { agent: selectedModel, message: botMessage, timestamp }
         ] || [];
   
         const data = {
@@ -89,12 +92,15 @@ const useChat = () => {
   
         return data;
       });
+
+      inputRef.current?.blur();
     }
   };
 
   return {
     handleSubmit,
     handleChange,
+    inputRef,
     setCurrentUserMessage,
     currentUserMessage,
     isResponseLoading,

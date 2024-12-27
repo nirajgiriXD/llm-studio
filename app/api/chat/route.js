@@ -1,4 +1,3 @@
-
 /**
  * Internal dependencies.
  */
@@ -17,7 +16,7 @@ export const POST = async (req, res) => {
 
   // Save the bot message
   if (!isIncognito) {
-    saveChatData(answer, 'bot');
+    saveChatData(answer, selectedModel.replace(".gguf", ""));
   }
 
   return new Response(JSON.stringify({ message: answer }), { status: 200 });

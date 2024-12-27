@@ -1,16 +1,70 @@
 "use client";
 
-import Markdown from "markdown-to-jsx";
-import { Card, CardContent } from "./ui/card";
+import { useCallback } from "react";
 import useApp from "@/hooks/use-app";
+import ChatCard from "./chat-card";
 import TypingAnimation from "./typing-animation";
+import { toast } from "@/hooks/use-toast";
 
 const CurrentChatHistory = () => {
-  const { history, selectedDate, isReponseLoading } = useApp();
+  const { history, selectedDate, isReponseLoading, setHistory } = useApp();
 
   const sortedHistory = (history[selectedDate] || []).sort((a, b) =>
     a.timestamp.localeCompare(b.timestamp)
   );
+
+  const handleCopy = useCallback((message, setIsCopying) => {
+    setIsCopying(true);
+
+    // Copy to clipboard
+    navigator.clipboard.writeText(message);
+
+    setTimeout(() => {
+      setIsCopying(false);
+    }, 1000);
+  }, []);
+
+  const handleDelete = useCallback(async (selectedDate, timestamp) => {
+    const isConfirmed = confirm(`Are you sure you want to delete this message?`);
+
+    if (!isConfirmed) {
+      return;
+    }
+
+    try {
+      const response = await fetch("/api/chat/delete", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({ selectedDate, timestamp }),
+      });
+
+      if (!response.ok) {
+        throw new Error("Failed to delete message.");
+      }
+
+      setHistory((prev) => {
+        const data = { ...prev };
+        const newData = data[selectedDate].filter((item) => item.timestamp !== timestamp);
+
+        data[selectedDate] = newData;
+
+        return data;
+      });
+
+      toast({
+        title: "Message Deleted Successfully",
+        description: "Message has been deleted successfully.",
+      });
+    } catch (error) {
+      toast({
+        title: "Failed To Delete Message",
+        description: error.message,
+        variant: "destructive",
+      });
+    }
+  }, []);
 
   return (
     <div className="space-y-4">
@@ -21,18 +75,7 @@ const CurrentChatHistory = () => {
             history.agent === "user" ? "justify-end" : "justify-start"
           }`}
         >
-          <Card
-            className={`max-w-xl shadow-none ${
-              history.agent === "user" ? "bg-sky-100" : "bg-gray-200"
-            }`}
-          >
-            <CardContent className="p-4">
-              <Markdown className="text-sm">{history.message}</Markdown>
-              <p className="text-[10px] mt-2 text-slate-600">
-                {history.timestamp}
-              </p>
-            </CardContent>
-          </Card>
+          <ChatCard history={history} selectedDate={selectedDate} handleCopy={handleCopy} handleDelete={handleDelete} />
         </div>
       ))}
 

@@ -8,6 +8,7 @@ const Chat = () => {
   const {
     currentUserMessage,
     setCurrentUserMessage,
+    inputRef,
     handleChange,
     handleSubmit,
   } = useChat();
@@ -17,6 +18,7 @@ const Chat = () => {
       <Textarea
         placeholder="Type your message here."
         className="bg-white"
+        ref={inputRef}
         value={currentUserMessage}
         onChange={handleChange}
         onKeyDown={(e) => {
