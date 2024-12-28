@@ -22,7 +22,7 @@ import {
 import { Separator } from "@/components/ui/separator";
 import { AppSidebar } from "@/components/AppSidebar";
 import { HistorySearch } from "@/components/HistorySearch";
-import { ToggleIncognito } from "@/components/ToggleIncognito";
+import { Settings } from "@/components/Settings";
 import { Chat } from "@/components/Chat";
 import { ChatHistory } from "@/components/ChatHistory";
 
@@ -54,7 +54,7 @@ const Page = () => {
 
           {/* Actions */}
           <div className="flex gap-4 items-center">
-            <ToggleIncognito />
+            <Settings />
             <HistorySearch />
           </div>
         </header>

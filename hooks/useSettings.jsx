@@ -12,6 +12,7 @@ import { toast } from "@/hooks/use-toast";
 import useApp from "@/hooks/useApp";
 
 const useSettings = () => {
+  const [isOpen, setIsOpen] = useState(false);
   const { settings, setSettings } = useApp();
 
   const handleValueChange = useCallback((name, value) => {
@@ -31,13 +32,15 @@ const useSettings = () => {
       temperature: prev._temperature,
     }));
 
+    setIsOpen(false);
+
     toast({
       title: "Settings Saved",
       description: "Your settings have been saved successfully.",
     });
   }, [setSettings]);
 
-  return { settings, handleValueChange, handleSettingsSubmit };
+  return { settings, isOpen, setIsOpen, handleValueChange, handleSettingsSubmit };
 };
 
 export default useSettings;

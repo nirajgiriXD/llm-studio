@@ -10,9 +10,15 @@ import path from "path";
  *
  * @param {string} prompt The prompt to be answered.
  * @param {string} selectedModel The selected model.
- * @returns {string} The answer from the model.
+ * @returns {Promise<string>} The answer from the model.
  */
-const getAnswer = async (prompt, selectedModel) => {
+const getAnswer = async ({
+  prompt,
+  selectedModel,
+  contextSize,
+  gpuLayers,
+  temperature,
+}) => {
   let answer = "";
 
   try {
@@ -21,9 +27,9 @@ const getAnswer = async (prompt, selectedModel) => {
 
     const llama = await getLlama();
     const modelPath = path.join(__dirname, "../models", selectedModel);
-    const model = await llama.loadModel({ modelPath });
+    const model = await llama.loadModel({ modelPath, temperature, gpuLayers });
 
-    const context = await model.createContext();
+    const context = await model.createContext({ contextSize });
     const session = new LlamaChatSession({
       contextSequence: context.getSequence(),
     });

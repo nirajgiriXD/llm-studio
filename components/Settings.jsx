@@ -31,15 +31,21 @@ import { Label } from "@/components/ui/label";
 import useSettings from "@/hooks/useSettings";
 
 export const Settings = () => {
-  const { settings, handleValueChange, handleSettingsSubmit } = useSettings();
+  const {
+    settings,
+    isOpen,
+    setIsOpen,
+    handleValueChange,
+    handleSettingsSubmit,
+  } = useSettings();
 
   return (
     <div className="flex gap-4 items-center">
       {settings.isIncognito && <VenetianMaskIcon size={16} />}
 
-      <Dialog>
+      <Dialog open={isOpen} onOpenChange={setIsOpen}>
         <DialogTrigger asChild>
-          <Button variant="outline">
+          <Button variant="outline" onClick={() => setIsOpen(true)}>
             <SettingsIcon size={16} />
           </Button>
         </DialogTrigger>
@@ -54,9 +60,14 @@ export const Settings = () => {
             {/* Incognito */}
             <div className="grid grid-cols-4 items-center gap-4 w-full">
               <Label htmlFor="username" className="col-span-1">
-              Incognito
+                Incognito
               </Label>
-              <Select value={settings._isIncognito ? "enable" : "disable"} onValueChange={(value) => handleValueChange('_isIncognito', value)}>
+              <Select
+                value={settings._isIncognito ? "enable" : "disable"}
+                onValueChange={(value) =>
+                  handleValueChange("_isIncognito", value)
+                }
+              >
                 <SelectTrigger className="col-span-3">
                   <SelectValue placeholder="Choose whether to enable incognito" />
                 </SelectTrigger>
@@ -71,31 +82,56 @@ export const Settings = () => {
 
             {/* Context Size */}
             <div className="grid grid-cols-4 items-center gap-4">
-              <Label htmlFor="context-size">
-                Context Size
-              </Label>
-              <Input id="context-size" onInput={(e) => handleValueChange('_contextSize', e.target.value)} value={settings._contextSize} className="col-span-3" type="number" />
+              <Label htmlFor="context-size">Context Size</Label>
+              <Input
+                id="context-size"
+                onInput={(e) =>
+                  handleValueChange("_contextSize", e.target.value)
+                }
+                value={settings._contextSize}
+                className="col-span-3"
+                type="number"
+                min="64"
+                max="4096"
+              />
             </div>
 
             {/* GPU Layers */}
             <div className="grid grid-cols-4 items-center gap-4">
-              <Label htmlFor="gpu-layers">
-                GPU Layers
-              </Label>
-              <Input id="gpu-layers" onInput={(e) => handleValueChange('_gpuLayers', e.target.value)} value={settings._gpuLayers} className="col-span-3" type="number" />
+              <Label htmlFor="gpu-layers">GPU Layers</Label>
+              <Input
+                id="gpu-layers"
+                onInput={(e) => handleValueChange("_gpuLayers", e.target.value)}
+                value={settings._gpuLayers}
+                className="col-span-3"
+                type="number"
+                min="0"
+                max="48"
+              />
             </div>
 
             {/* Temperature */}
             <div className="grid grid-cols-4 items-center gap-4">
-              <Label htmlFor="temperature">
-                Temperature
-              </Label>
-              <Input id="temperature" onInput={(e) => handleValueChange('_temperature', e.target.value)} value={settings._temperature} className="col-span-3" type="number" />
+              <Label htmlFor="temperature">Temperature</Label>
+              <Input
+                id="temperature"
+                onInput={(e) =>
+                  handleValueChange("_temperature", e.target.value)
+                }
+                value={settings._temperature}
+                className="col-span-3"
+                type="number"
+                min="0"
+                max="2"
+                step="0.1"
+              />
             </div>
           </div>
 
           <DialogFooter>
-            <Button type="submit" onClick={handleSettingsSubmit}>Save</Button>
+            <Button type="submit" onClick={handleSettingsSubmit}>
+              Save
+            </Button>
           </DialogFooter>
         </DialogContent>
       </Dialog>
