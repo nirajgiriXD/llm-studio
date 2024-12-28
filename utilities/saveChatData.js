@@ -33,11 +33,11 @@ const saveChatData = (message, agent, selectedDate) => {
     jsonData.data.push(chatEntry);
 
     // Write updated data back to the file
-    fs.writeFileSync(filePath, JSON.stringify(jsonData, null, 2));
+    fs.writeFileSync(filePath, JSON.stringify(jsonData));
   } else {
     // Create a new file with the chat data
     const newData = { data: [chatEntry] };
-    fs.writeFileSync(filePath, JSON.stringify(newData, null, 2));
+    fs.writeFileSync(filePath, JSON.stringify(newData));
   }
 };
 

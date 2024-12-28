@@ -22,8 +22,10 @@ const useChat = () => {
     isResponseLoading,
     setIsResponseLoading,
     setHistory,
-    isIncognito,
+    settings,
   } = useApp();
+
+  const { isIncognito, gpuLayers, contextSize, temperature } = settings;
 
   // Function to handle the change in textarea value
   const handleChange = (event) => {
@@ -61,8 +63,11 @@ const useChat = () => {
         body: JSON.stringify({
           prompt: _currentUserMessage,
           selectedModel,
-          isIncognito,
           selectedDate,
+          isIncognito,
+          gpuLayers,
+          contextSize,
+          temperature,
         }),
       });
 

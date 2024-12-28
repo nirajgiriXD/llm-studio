@@ -4,7 +4,15 @@
 import { getAnswer, saveChatData } from "@/utilities";
 
 export const POST = async (req, res) => {
-  const { prompt, selectedModel, isIncognito, selectedDate } = await req.json();
+  const {
+    prompt,
+    selectedModel,
+    isIncognito,
+    contextSize,
+    gpuLayers,
+    temperature,
+    selectedDate,
+  } = await req.json();
 
   // Save the user message
   if (!isIncognito) {
@@ -12,7 +20,13 @@ export const POST = async (req, res) => {
   }
 
   // Get the bot message
-  const answer = await getAnswer(prompt, selectedModel);
+  const answer = await getAnswer({
+    prompt,
+    selectedModel,
+    contextSize: Number(contextSize),
+    gpuLayers: Number(gpuLayers),
+    temperature: Number(temperature),
+  });
 
   // Save the bot message
   if (!isIncognito) {

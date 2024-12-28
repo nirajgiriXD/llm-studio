@@ -38,7 +38,16 @@ const AppDataProvider = ({ children }) => {
   const [selectedDate, setSelectedDate] = useState(getFormattedDate());
   const [currentUserMessage, setCurrentUserMessage] = useState("");
   const [isReponseLoading, setIsResponseLoading] = useState(false);
-  const [isIncognito, setIsIncognito] = useState(false);
+  const [settings, setSettings] = useState({
+    isIncognito: false,
+    contextSize: 512,
+    gpuLayers: 32,
+    temperature: 0.7,
+    _isIncognito: false,
+    _contextSize: 512,
+    _gpuLayers: 33,
+    _temperature: 0.7,
+  });
 
   // Fetch models data (`models`, `selectedModel`) on component mount
   useEffect(() => {
@@ -79,6 +88,7 @@ const AppDataProvider = ({ children }) => {
 
         const { data = {}, date = [] } = await response.json();
 
+        // Add today's date to the history dates if not present
         if (!date.includes(formattedDate)) {
           date.push(formattedDate);
         }
@@ -112,8 +122,8 @@ const AppDataProvider = ({ children }) => {
     setIsResponseLoading,
     selectedDate,
     setSelectedDate,
-    isIncognito,
-    setIsIncognito,
+    settings,
+    setSettings,
   };
 
   return (
