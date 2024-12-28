@@ -4,6 +4,36 @@
 
 LLM Studio is designed to empower users to harness the capabilities of large language models (LLMs) on their own machines, providing a seamless, private, and offline experience. It is the ideal solution for anyone looking to dive deeper into open-source LLMs while maintaining control over their data and processes. Explore the power of large language models, all from the comfort of your own machine.
 
+## Working Mechanism
+
+LLM Studio operates with a focus on simplicity and efficiency. Here’s how it works:
+
+- **Chat History Management:**  
+  - Each chat session's history is saved as a JSON file in the `history` folder.  
+  - The filename corresponds to the date when the chat was first initiated, in `YYYY-MM-DD` format.
+
+- **Model Storage:**  
+  - `.gguf` models should be placed in the `models` folder.  
+  - By default, the smallest model in the folder is selected as the default model.
+
+- **Optimized History Loading:**  
+  - All chat histories are loaded into the browser for quick access.  
+  - Since they are stored as JSON files, the data size remains minimal.
+
+- **Search Functionality:**  
+  - The search field allows users to quickly navigate through their entire chat history.
+
+- **Model Switching:**  
+  - Users can switch between different models available in the `models` folder as needed.
+
+- **Incognito Mode:**  
+  - Activate incognito mode to prevent saving chat history from that point onward.
+
+- **Copy and Delete Options:**  
+  - Easily copy any chat message by clicking the copy icon.  
+  - Delete chat sessions using the delete icon for better organization.
+
+
 ## Convert Hugging Face (.safetensors) Model Format to .gguf
 
 Follow these steps to convert a Hugging Face model into the `.gguf` format for use in LLM Studio:
