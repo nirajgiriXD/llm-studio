@@ -40,12 +40,12 @@ const AppDataProvider = ({ children }) => {
   const [isReponseLoading, setIsResponseLoading] = useState(false);
   const [settings, setSettings] = useState({
     isIncognito: false,
-    contextSize: 512,
+    contextSize: 1024,
     gpuLayers: 32,
     temperature: 0.7,
     _isIncognito: false,
-    _contextSize: 512,
-    _gpuLayers: 33,
+    _contextSize: 1024,
+    _gpuLayers: 32,
     _temperature: 0.7,
   });
 
