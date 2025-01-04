@@ -1,11 +1,17 @@
 "use client";
 
 /**
+ * External dependencies.
+ */
+import { VenetianMaskIcon } from "lucide-react";
+
+/**
  * Internal dependencies.
  */
 import { Button } from "@/components/ui/button";
 import { Textarea } from "@/components/ui/textarea";
 import useChat from "@/hooks/useChat";
+import useSettings from "@/hooks/useSettings";
 
 export const Chat = () => {
   const {
@@ -15,6 +21,8 @@ export const Chat = () => {
     handleChange,
     handleSubmit,
   } = useChat();
+
+  const { settings } = useSettings();
 
   return (
     <div className="flex flex-col gap-4">
@@ -38,7 +46,10 @@ export const Chat = () => {
       />
 
       <div className="flex justify-end">
-        <Button onClick={handleSubmit}>Submit</Button>
+        <Button onClick={handleSubmit}>
+            Submit
+            {settings.isIncognito && <VenetianMaskIcon size={16} />}
+        </Button>
       </div>
     </div>
   );
