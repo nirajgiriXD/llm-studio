@@ -33,6 +33,10 @@ LLM Studio operates with a focus on simplicity and efficiency. Here’s how it w
   - Easily copy any chat message by clicking the copy icon.  
   - Delete chat sessions using the delete icon for better organization.
 
+## Prerequisites
+
+- [CMake](https://cmake.org/): Verify with cmake --version.
+- C++ Compiler: Install gcc (Linux), clang (macOS), or [Visual Studio (Windows)](https://visualstudio.microsoft.com/vs/features/cplusplus/).
 
 ## Convert Hugging Face (.safetensors) Model Format to .gguf
 
@@ -54,12 +58,6 @@ Use CMake to build the project:
 ```bash
 cmake -S . -B build
 ```
-
-Ensure you have the required tools installed:
-
-- **CMake:** Verify with cmake --version.
-- **C++ Compiler:** Install gcc (Linux), clang (macOS), or Visual Studio (Windows).
-
 
 ### Step 3: Install Python Dependencies
 
