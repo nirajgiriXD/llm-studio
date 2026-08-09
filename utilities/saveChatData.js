@@ -2,43 +2,54 @@
  * External dependencies.
  */
 import fs from "fs";
-import path from "path";
+
+/**
+ * Internal dependencies.
+ */
+import { getHistoryFolder, resolveHistoryFile } from "./paths";
 
 /**
  * Save chat data to a JSON file.
- * @param {string} message User message or LLM response
- * @param {string} agent User or Selected LLM Model
- * @param {string} selectedDate JSON file name
+ *
+ * The timestamp is supplied by the caller so the entry written to disk shares
+ * its identity with the message already rendered in the browser — that shared
+ * timestamp is what deletes match on later.
+ *
+ * @param {string} message User message or LLM response.
+ * @param {string} agent `user` or the selected model.
+ * @param {string} selectedDate History date key used as the file name.
+ * @param {string} timestamp ISO timestamp identifying the entry.
  */
-const saveChatData = (message, agent, selectedDate) => {
-  const folderPath = path.join(process.cwd(), "history");
-  const fileName = `${selectedDate}.json`;
-  const filePath = path.join(folderPath, fileName);
+const saveChatData = (message, agent, selectedDate, timestamp) => {
+  const filePath = resolveHistoryFile(selectedDate);
 
-  // Ensure the folder exists
-  if (!fs.existsSync(folderPath)) {
-    fs.mkdirSync(folderPath);
-  }
+  fs.mkdirSync(getHistoryFolder(), { recursive: true });
 
-  // Chat data to append
-  const chatEntry = { agent, message, timestamp: new Date() };
+  const chatEntry = {
+    agent,
+    message,
+    timestamp: timestamp || new Date().toISOString(),
+  };
 
-  // Check if the file exists
+  let jsonData = { data: [] };
+
   if (fs.existsSync(filePath)) {
-    // Read the existing file
-    const fileContent = fs.readFileSync(filePath, "utf8");
-    const jsonData = JSON.parse(fileContent);
+    try {
+      const parsed = JSON.parse(fs.readFileSync(filePath, "utf8"));
 
-    // Append new chat data
-    jsonData.data.push(chatEntry);
-
-    // Write updated data back to the file
-    fs.writeFileSync(filePath, JSON.stringify(jsonData));
-  } else {
-    // Create a new file with the chat data
-    const newData = { data: [chatEntry] };
-    fs.writeFileSync(filePath, JSON.stringify(newData));
+      if (Array.isArray(parsed?.data)) {
+        jsonData = parsed;
+      }
+    } catch {
+      // A corrupt history file should not block the current conversation; it is
+      // replaced with a fresh, valid one instead.
+      console.error(`Could not parse ${filePath}; starting a new history file.`);
+    }
   }
+
+  jsonData.data.push(chatEntry);
+
+  fs.writeFileSync(filePath, JSON.stringify(jsonData, null, 2));
 };
 
 export default saveChatData;

@@ -1,19 +1,21 @@
 import * as React from "react"
 
 const MOBILE_BREAKPOINT = 768
+const MOBILE_QUERY = `(max-width: ${MOBILE_BREAKPOINT - 1}px)`
+
+const subscribe = (onStoreChange) => {
+  const mql = window.matchMedia(MOBILE_QUERY)
+
+  mql.addEventListener("change", onStoreChange)
+
+  return () => mql.removeEventListener("change", onStoreChange);
+}
+
+const getSnapshot = () => window.matchMedia(MOBILE_QUERY).matches
+
+// The server has no viewport, so it renders the desktop layout.
+const getServerSnapshot = () => false
 
 export function useIsMobile() {
-  const [isMobile, setIsMobile] = React.useState(undefined)
-
-  React.useEffect(() => {
-    const mql = window.matchMedia(`(max-width: ${MOBILE_BREAKPOINT - 1}px)`)
-    const onChange = () => {
-      setIsMobile(window.innerWidth < MOBILE_BREAKPOINT)
-    }
-    mql.addEventListener("change", onChange)
-    setIsMobile(window.innerWidth < MOBILE_BREAKPOINT)
-    return () => mql.removeEventListener("change", onChange);
-  }, [])
-
-  return !!isMobile
+  return React.useSyncExternalStore(subscribe, getSnapshot, getServerSnapshot)
 }

@@ -3,20 +3,25 @@
  */
 import { deleteChatData } from "@/utilities";
 
-export const POST = async (req, res) => {
-  const { timestamp, selectedDate } = await req.json();
+export const dynamic = "force-dynamic";
 
+export const POST = async (req) => {
   try {
-    // Delete the chat data
-    const result = deleteChatData(selectedDate, timestamp);
+    const { timestamp, selectedDate } = await req.json();
 
-    if (!result) {
-      throw new Error("Failed to delete chat.");
+    if (!timestamp) {
+      return Response.json({ error: "A message timestamp is required." }, { status: 400 });
     }
 
-    return new Response("Chat deleted successfully.", { status: 200 });
+    const { removed } = deleteChatData(selectedDate, timestamp);
+
+    return Response.json({ removed });
   } catch (error) {
-    // Return an error response
-    return new Response(error.message, { status: 500 });
+    console.error("Failed to delete chat message:", error);
+
+    return Response.json(
+      { error: error.message || "Failed to delete the message." },
+      { status: 500 }
+    );
   }
 };

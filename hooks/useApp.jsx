@@ -11,7 +11,13 @@ import { useContext } from "react";
 import { AppDataContext } from "@/providers/AppDataProvider";
 
 const useApp = () => {
-  return useContext(AppDataContext);
+  const context = useContext(AppDataContext);
+
+  if (!context) {
+    throw new Error("useApp must be used within an AppDataProvider.");
+  }
+
+  return context;
 };
 
 export default useApp;

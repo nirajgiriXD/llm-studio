@@ -2,43 +2,44 @@
  * External dependencies.
  */
 import fs from "fs";
-import path from "path";
 
 /**
- * Deletes a chat entry from the JSON file.
- * @param {string} date JSON file name
- * @param {string} timestamp Timestamp of the chat entry
- * @returns {boolean} True if the chat entry was deleted successfully
+ * Internal dependencies.
+ */
+import { resolveHistoryFile } from "./paths";
+
+/**
+ * Delete a chat entry from its JSON file.
+ *
+ * Messages sent in incognito mode never reach disk, so "nothing to remove" is a
+ * success rather than an error — the caller still drops it from the UI.
+ *
+ * @param {string} date History date key.
+ * @param {string} timestamp Timestamp of the chat entry.
+ * @returns {{removed: boolean}} Whether a stored entry was removed.
+ * @throws {Error} When the history file exists but cannot be rewritten.
  */
 const deleteChatData = (date, timestamp) => {
-  const folderPath = path.join(process.cwd(), "history");
-  const filePath = path.join(folderPath, `${date}.json`);
+  const filePath = resolveHistoryFile(date);
 
-  // Check if the file exists
   if (!fs.existsSync(filePath)) {
-    return false;
+    return { removed: false };
   }
 
-  try {
-    // Read the existing file
-    const fileContent = fs.readFileSync(filePath, "utf8");
-    const jsonData = JSON.parse(fileContent);
+  const jsonData = JSON.parse(fs.readFileSync(filePath, "utf8"));
+  const entries = Array.isArray(jsonData?.data) ? jsonData.data : [];
+  const updatedData = entries.filter((entry) => entry.timestamp !== timestamp);
 
-    // Filter out the entry with the matching timestamp
-    const updatedData = jsonData.data.filter(
-      (entry) => entry.timestamp !== timestamp
-    );
-
-    // Update the JSON structure
-    jsonData.data = updatedData;
-
-    // Write updated data back to the file
-    fs.writeFileSync(filePath, JSON.stringify(jsonData, null, 2));
-
-    return true;
-  } catch (error) {
-    return false;
+  if (updatedData.length === entries.length) {
+    return { removed: false };
   }
+
+  fs.writeFileSync(
+    filePath,
+    JSON.stringify({ ...jsonData, data: updatedData }, null, 2)
+  );
+
+  return { removed: true };
 };
 
 export default deleteChatData;

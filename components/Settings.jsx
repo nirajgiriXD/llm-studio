@@ -3,7 +3,8 @@
 /**
  * External dependencies.
  */
-import { SettingsIcon } from "lucide-react";
+import { useId } from "react";
+import { RotateCcwIcon, Settings2Icon, VenetianMaskIcon } from "lucide-react";
 
 /**
  * Internal dependencies.
@@ -11,6 +12,7 @@ import { SettingsIcon } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import {
   Dialog,
+  DialogClose,
   DialogContent,
   DialogDescription,
   DialogFooter,
@@ -19,144 +21,217 @@ import {
   DialogTrigger,
 } from "@/components/ui/dialog";
 import {
-  Select,
-  SelectContent,
-  SelectGroup,
-  SelectItem,
-  SelectTrigger,
-  SelectValue,
-} from "@/components/ui/select";
-import { Input } from "@/components/ui/input";
-import { Label } from "@/components/ui/label";
+  Field,
+  FieldContent,
+  FieldDescription,
+  FieldError,
+  FieldGroup,
+  FieldLabel,
+  FieldSeparator,
+} from "@/components/ui/field";
+import {
+  InputGroup,
+  InputGroupAddon,
+  InputGroupInput,
+  InputGroupText,
+} from "@/components/ui/input-group";
+import { Slider } from "@/components/ui/slider";
+import { Switch } from "@/components/ui/switch";
+import { Tooltip, TooltipContent, TooltipTrigger } from "@/components/ui/tooltip";
+import { clampSetting, SETTINGS_FIELDS } from "@/lib/settings";
 import useSettings from "@/hooks/useSettings";
 
-export const Settings = () => {
+/**
+ * A numeric model parameter, editable either by dragging or by typing.
+ */
+const SettingControl = ({ name, value, error, onChange }) => {
+  const { label, unit, min, max, step, description } = SETTINGS_FIELDS[name];
+  const id = useId();
+  const descriptionId = `${id}-description`;
+  const errorId = `${id}-error`;
+
+  return (
+    <Field>
+      <div className="flex items-center justify-between gap-4">
+        <FieldLabel htmlFor={id} className="text-sm">
+          {label}
+        </FieldLabel>
+
+        <InputGroup className="w-34 shrink-0">
+          <InputGroupInput
+            id={id}
+            type="number"
+            inputMode="decimal"
+            min={min}
+            max={max}
+            step={step}
+            value={value}
+            onChange={(event) => onChange(name, event.target.value)}
+            aria-invalid={Boolean(error)}
+            aria-describedby={error ? `${descriptionId} ${errorId}` : descriptionId}
+            className="tabular-nums"
+          />
+          {unit && (
+            <InputGroupAddon align="inline-end">
+              <InputGroupText className="text-xs">{unit}</InputGroupText>
+            </InputGroupAddon>
+          )}
+        </InputGroup>
+      </div>
+
+      <Slider
+        value={[clampSetting(name, value)]}
+        min={min}
+        max={max}
+        step={step}
+        onValueChange={([next]) => onChange(name, next)}
+        aria-label={`${label} slider`}
+        className="py-1"
+      />
+
+      <div className="flex items-center justify-between gap-3 text-xs text-muted-foreground tabular-nums">
+        <span>{min}</span>
+        <span>{max}</span>
+      </div>
+
+      <FieldDescription id={descriptionId}>{description}</FieldDescription>
+      {error && <FieldError id={errorId}>{error}</FieldError>}
+    </Field>
+  );
+};
+
+/**
+ * Model and privacy settings.
+ *
+ * @param {Object} props Component props.
+ * @param {"sidebar"|"icon"} props.variant How the trigger should be rendered.
+ */
+export const Settings = ({ variant = "icon" }) => {
   const {
-    settings,
+    draft,
+    errors,
+    isValid,
+    isDirty,
     isOpen,
-    setIsOpen,
+    handleOpenChange,
     handleValueChange,
+    handleReset,
     handleSettingsSubmit,
   } = useSettings();
 
-  return (
-    <div className="flex gap-4 items-center">
-      <Dialog open={isOpen} onOpenChange={setIsOpen}>
-        <DialogTrigger asChild>
-          <Button variant="outline" onClick={() => setIsOpen(true)}>
-            <SettingsIcon size={16} />
+  const trigger =
+    variant === "sidebar" ? (
+      <Button
+        variant="ghost"
+        className="h-8 flex-1 justify-start gap-2 px-2 font-normal text-muted-foreground hover:text-foreground"
+      >
+        <Settings2Icon />
+        Settings
+      </Button>
+    ) : (
+      <Tooltip>
+        <TooltipTrigger asChild>
+          <Button variant="ghost" size="icon-sm" aria-label="Open settings">
+            <Settings2Icon />
           </Button>
-        </DialogTrigger>
-        <DialogContent className="sm:max-w-[500px]">
-          <DialogHeader>
-            <DialogTitle>Settings</DialogTitle>
-            <DialogDescription>
-              Adjust your settings and click save.
-            </DialogDescription>
-          </DialogHeader>
-          <div className="grid gap-4 sm:gap-6 py-2">
-            {/* Incognito */}
-            <div className="grid gap-2 w-full">
-              <Label htmlFor="incognito">Incognito</Label>
-              <Select
-                value={settings._isIncognito ? "enable" : "disable"}
-                onValueChange={(value) =>
-                  handleValueChange("_isIncognito", value)
-                }
-              >
-                <SelectTrigger>
-                  <SelectValue placeholder="Choose whether to enable incognito" />
-                </SelectTrigger>
-                <SelectContent>
-                  <SelectGroup>
-                    <SelectItem value="disable">Disable</SelectItem>
-                    <SelectItem value="enable">Enable</SelectItem>
-                  </SelectGroup>
-                </SelectContent>
-              </Select>
-              <p className="text-xs text-muted-foreground">
-                Enable incognito mode to prevent your messages from being
-                stored.
-              </p>
-            </div>
+        </TooltipTrigger>
+        <TooltipContent>Settings</TooltipContent>
+      </Tooltip>
+    );
 
-            {/* Context Size */}
-            <div className="grid gap-2">
-              <Label htmlFor="context-size">
-                Context Size{" "}
-                <span className="text-muted-foreground text-xs">(64 - 4096)</span>
-              </Label>
-              <Input
-                id="context-size"
-                onInput={(e) =>
-                  handleValueChange("_contextSize", e.target.value)
-                }
-                value={settings._contextSize}
-                type="number"
-                min="64"
-                max="4096"
-              />
-              <p className="text-xs text-muted-foreground">
-                Specifies the maximum number of tokens the model can process in
-                a single session or context window; if set too high, it may
-                cause performance issues or crashes, so keep it lower (e.g.,
-                512-1024) if you face problems.
-              </p>
-            </div>
+  return (
+    <Dialog open={isOpen} onOpenChange={handleOpenChange}>
+      <DialogTrigger asChild>{trigger}</DialogTrigger>
 
-            {/* GPU Layers */}
-            <div className="grid gap-2">
-              <Label htmlFor="gpu-layers">
-                GPU Layers{" "}
-                <span className="text-muted-foreground text-xs">(0 - 64)</span>
-              </Label>
-              <Input
-                id="gpu-layers"
-                onInput={(e) => handleValueChange("_gpuLayers", e.target.value)}
-                value={settings._gpuLayers}
-                type="number"
-                min="0"
-                max="64"
-              />
-              <p className="text-xs text-muted-foreground">
-                Determines the number of model layers offloaded to the GPU for
-                faster processing; setting it too high may exceed GPU memory, so
-                use a smaller value (e.g., 10-20) if the model crashes.
-              </p>
-            </div>
+      <DialogContent className="flex max-h-[90svh] flex-col gap-0 p-0 sm:max-w-lg">
+        <DialogHeader className="border-b px-6 py-4 text-left">
+          <DialogTitle>Settings</DialogTitle>
+          <DialogDescription>
+            Tune how the local model runs. Changes apply to your next message.
+          </DialogDescription>
+        </DialogHeader>
 
-            {/* Temperature */}
-            <div className="grid gap-2">
-              <Label htmlFor="temperature">
-                Temperature{" "}
-                <span className="text-muted-foreground text-xs">(0 - 2)</span>
-              </Label>
-              <Input
-                id="temperature"
-                onInput={(e) =>
-                  handleValueChange("_temperature", e.target.value)
-                }
-                value={settings._temperature}
-                type="number"
-                min="0"
-                max="2"
-                step="0.1"
+        <form
+          className="flex min-h-0 flex-1 flex-col"
+          onSubmit={(event) => {
+            event.preventDefault();
+            handleSettingsSubmit();
+          }}
+        >
+          <div className="scrollbar-subtle min-h-0 flex-1 overflow-y-auto px-6 py-5">
+            <FieldGroup className="gap-6">
+              <Field orientation="horizontal">
+                <FieldContent>
+                  <FieldLabel htmlFor="incognito" className="text-sm">
+                    <VenetianMaskIcon
+                      className="size-4 text-muted-foreground"
+                      aria-hidden="true"
+                    />
+                    Incognito
+                  </FieldLabel>
+                  <FieldDescription>
+                    Keep new messages in this session only — nothing is written to the
+                    history folder.
+                  </FieldDescription>
+                </FieldContent>
+                <Switch
+                  id="incognito"
+                  checked={Boolean(draft.isIncognito)}
+                  onCheckedChange={(checked) =>
+                    handleValueChange("isIncognito", checked)
+                  }
+                />
+              </Field>
+
+              <FieldSeparator />
+
+              <SettingControl
+                name="contextSize"
+                value={draft.contextSize}
+                error={errors.contextSize}
+                onChange={handleValueChange}
               />
-              <p className="text-xs text-muted-foreground">
-                Controls the randomness of the model&apos;s output; lower values
-                (e.g., 0.2-0.5) make responses more deterministic, while higher
-                values (e.g., 0.7-1.0) increase diversity.
-              </p>
-            </div>
+
+              <SettingControl
+                name="gpuLayers"
+                value={draft.gpuLayers}
+                error={errors.gpuLayers}
+                onChange={handleValueChange}
+              />
+
+              <SettingControl
+                name="temperature"
+                value={draft.temperature}
+                error={errors.temperature}
+                onChange={handleValueChange}
+              />
+            </FieldGroup>
           </div>
 
-          <DialogFooter>
-            <Button type="submit" onClick={handleSettingsSubmit}>
-              Save
+          <DialogFooter className="border-t px-6 py-4 sm:justify-between">
+            <Button
+              type="button"
+              variant="ghost"
+              onClick={handleReset}
+              className="text-muted-foreground hover:text-foreground"
+            >
+              <RotateCcwIcon />
+              Reset to defaults
             </Button>
+
+            <div className="flex flex-col-reverse gap-2 sm:flex-row">
+              <DialogClose asChild>
+                <Button type="button" variant="outline">
+                  Cancel
+                </Button>
+              </DialogClose>
+              <Button type="submit" disabled={!isValid || !isDirty}>
+                Save changes
+              </Button>
+            </div>
           </DialogFooter>
-        </DialogContent>
-      </Dialog>
-    </div>
+        </form>
+      </DialogContent>
+    </Dialog>
   );
 };
