@@ -3,26 +3,25 @@
  */
 import { getModels } from "@/utilities";
 
-export const GET = async (req, res) => {
-  try {
-    const models = getModels() ?? [];
+export const dynamic = "force-dynamic";
 
-    // Extract the model names and determine the smallest model by size
-    const modelNames = models.map((model) => `${model.name}.gguf`);
-    const defaultModelName =
+export const GET = async () => {
+  try {
+    const models = getModels();
+
+    // The smallest model is the safest default: it is the most likely to fit in
+    // the available memory on first run.
+    const defaultModel =
       models.reduce(
         (smallest, current) =>
-          smallest.sizeInBytes < current.sizeInBytes ? smallest : current,
+          smallest.sizeInBytes <= current.sizeInBytes ? smallest : current,
         models[0]
-      )?.name + ".gguf" || "";
+      )?.name ?? "";
 
-    // Return the formatted JSON data with keys
-    return new Response(
-      JSON.stringify({ models: modelNames, defaultModel: defaultModelName }),
-      { status: 200 }
-    );
+    return Response.json({ models, defaultModel });
   } catch (error) {
-    // Return an error response
-    return new Response("Failed to load Models", { status: 500 });
+    console.error("Failed to load models:", error);
+
+    return Response.json({ error: "Failed to load models." }, { status: 500 });
   }
 };

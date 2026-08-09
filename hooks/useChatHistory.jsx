@@ -3,85 +3,72 @@
 /**
  * External dependencies.
  */
-import { useCallback, useMemo } from "react";
+import { useCallback, useMemo, useState } from "react";
+import { toast } from "sonner";
 
 /**
  * Internal dependencies.
  */
-import { toast } from "@/hooks/use-toast";
+import useApp from "@/hooks/useApp";
 
-const useChatHistory = ({ history, setHistory, selectedDate }) => {
-  // Sort the chat history based on the timestamp
-  const sortedHistory = useMemo(
+const useChatHistory = () => {
+  const { history, selectedDate, removeMessage } = useApp();
+  const [pendingDelete, setPendingDelete] = useState(null);
+  const [isDeleting, setIsDeleting] = useState(false);
+
+  // Sort the chat history based on the timestamp. The stored array is never
+  // mutated, so a message removal still produces a new reference.
+  const messages = useMemo(
     () =>
-      (history[selectedDate] || []).sort((a, b) =>
-        a.timestamp.localeCompare(b.timestamp)
+      [...(history[selectedDate] ?? [])].sort((a, b) =>
+        String(a.timestamp).localeCompare(String(b.timestamp))
       ),
     [history, selectedDate]
   );
 
-  // Function to handle copying the message
-  const handleCopy = useCallback((message, setIsCopying) => {
-    setIsCopying(true);
-
-    // Copy to clipboard
-    navigator.clipboard.writeText(message);
-
-    setTimeout(() => {
-      setIsCopying(false);
-    }, 1000);
-  }, []);
-
-  // Function to handle deleting the message
-  const handleDelete = useCallback(async (date, timestamp) => {
-    const isConfirmed = confirm(
-      `Are you sure you want to delete this message?`
-    );
-
-    if (!isConfirmed) {
+  // Function to handle deleting the message, once confirmed.
+  const confirmDelete = useCallback(async () => {
+    if (!pendingDelete) {
       return;
     }
+
+    const { date, timestamp } = pendingDelete;
+
+    setIsDeleting(true);
 
     try {
       const response = await fetch("/api/chat/delete", {
         method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
+        headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ selectedDate: date, timestamp }),
       });
 
       if (!response.ok) {
-        throw new Error("Failed to delete message.");
+        const payload = await response.json().catch(() => ({}));
+
+        throw new Error(payload.error || "Failed to delete the message.");
       }
 
-      setHistory((prev) => {
-        const data = { ...prev };
-        const newData = data[selectedDate].filter(
-          (item) => item.timestamp !== timestamp
-        );
+      removeMessage(date, timestamp);
+      setPendingDelete(null);
 
-        data[selectedDate] = newData;
-
-        return data;
-      });
-
-      toast({
-        title: "Message Deleted Successfully",
-        description: "Message has been deleted successfully.",
-      });
+      toast.success("Message deleted");
     } catch (error) {
-      toast({
-        title: "Failed To Delete Message",
+      toast.error("Could not delete the message", {
         description: error.message,
-        variant: "destructive",
       });
+    } finally {
+      setIsDeleting(false);
     }
+  }, [pendingDelete, removeMessage]);
 
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
-
-  return { sortedHistory, handleCopy, handleDelete };
+  return {
+    messages,
+    pendingDelete,
+    setPendingDelete,
+    confirmDelete,
+    isDeleting,
+  };
 };
 
 export default useChatHistory;
